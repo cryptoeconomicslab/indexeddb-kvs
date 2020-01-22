@@ -1,6 +1,6 @@
 {
   "name": "@cryptoeconomicslab/indexeddb-kvs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -26,12 +26,12 @@
   },
   "homepage": "https://github.com/cryptoeconomicslab/indexeddb-kvs#readme",
   "peerDependencies": {
-    "@cryptoeconomicslab/db": "0.0.3",
-    "@cryptoeconomicslab/primitives": "0.0.3"
+    "@cryptoeconomicslab/db": "^0.0.6",
+    "@cryptoeconomicslab/primitives": "^0.0.6"
   },
   "devDependencies": {
-    "@cryptoeconomicslab/db": "0.0.3",
-    "@cryptoeconomicslab/primitives": "0.0.3",
+    "@cryptoeconomicslab/db": "^0.0.6",
+    "@cryptoeconomicslab/primitives": "^0.0.6",
     "@types/jest": "^24.9.0",
     "@types/levelup": "^4.3.0",
     "@types/memdown": "^3.0.0",
