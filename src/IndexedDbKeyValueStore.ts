@@ -98,7 +98,7 @@ export class IndexedDbKeyValueStore implements KeyValueStore {
   }
 
   private async getDb(): Promise<IDBDatabase> {
-    return this.db || (await this.openPromise)
+    return this.db || this.openPromise
   }
 
   private async getVersion(): Promise<number> {
