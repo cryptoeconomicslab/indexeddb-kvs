@@ -71,11 +71,15 @@ export class IndexedDbKeyValueStore implements KeyValueStore {
   }
 
   private async openDb(version?: number): Promise<IDBDatabase> {
-    return await new Promise(resolve => {
+    return await new Promise((resolve, reject) => {
       const req = indexedDB.open(this.dbName.intoString(), version)
 
+      req.onerror = () => {
+        reject(req.error)
+      }
       req.onsuccess = () => {
         const db = req.result
+        this.db = db
         db.onversionchange = e => {
           this.db = null
           if (e.newVersion) {
@@ -88,6 +92,7 @@ export class IndexedDbKeyValueStore implements KeyValueStore {
 
       req.onupgradeneeded = () => {
         const db = req.result
+        this.db = db
         if (!db.objectStoreNames.contains(this.storeKey)) {
           req.result.createObjectStore(this.storeKey, {
             keyPath: STORE_KEY_PATH
@@ -98,7 +103,7 @@ export class IndexedDbKeyValueStore implements KeyValueStore {
   }
 
   private async getDb(): Promise<IDBDatabase> {
-    return this.db || this.openPromise
+    return this.db || (await this.openPromise)
   }
 
   private async getVersion(): Promise<number> {
@@ -225,14 +230,13 @@ export class IndexedDbKeyValueStore implements KeyValueStore {
 
   public async close(): Promise<void> {
     return await new Promise(resolve => {
+      // If close is called explicitly onclose event doesn't fire.
+      // So we don't wait onclose event
+      // https://w3c.github.io/IndexedDB/#closing-connection
       if (this.db) {
         this.db.close()
-        this.db.onclose = () => {
-          resolve()
-        }
-      } else {
-        resolve()
       }
+      resolve()
     })
   }
 }
