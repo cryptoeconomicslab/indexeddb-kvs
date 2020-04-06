@@ -218,7 +218,7 @@ export class IndexedDbKeyValueStore implements KeyValueStore {
     )
 
     // in order for new version to be detected
-    await bucket.openDb()
+    await bucket.open()
     return Promise.resolve(bucket)
   }
 
