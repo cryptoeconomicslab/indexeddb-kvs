@@ -81,15 +81,12 @@ export class IndexedDbKeyValueStore implements KeyValueStore {
         const db = req.result
         this.db = db
         db.onversionchange = e => {
-          // console.log('onversionchange', e.newVersion, this.storeKey)
           this.db = null
           if (e.newVersion) {
             this.openPromise = this.openDb(e.newVersion)
           }
           db.close()
         }
-
-        this.db = db
         resolve(db)
       }
 
@@ -221,7 +218,7 @@ export class IndexedDbKeyValueStore implements KeyValueStore {
     )
 
     // in order for new version to be detected
-    await bucket.openDb()
+    await bucket.open()
     return Promise.resolve(bucket)
   }
 
